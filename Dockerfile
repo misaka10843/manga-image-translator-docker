@@ -13,8 +13,7 @@ RUN sed -i '/^torch$/d' /app/requirements.txt \
     && sed -i '/^torchvision$/d' /app/requirements.txt \
     && sed -i '/^torchaudio$/d' /app/requirements.txt
 
-RUN pip install --no-cache-dir numpy==1.26.4
-RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN pip install --no-cache-dir --break-system-packages -r /app/requirements.txt
 
 RUN apt-get remove g++ wget --yes \
     && apt-get autoremove --yes \
