@@ -5,20 +5,20 @@ WORKDIR /app
 COPY requirements.txt /app/requirements.txt
 
 RUN export TZ=Etc/UTC \
-        && apt update --yes \
-        && apt install g++ wget ffmpeg libsm6 libxext6 gimp libvulkan1 --yes \
-        && wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb \
-        && dpkg -i cuda-keyring_1.1-1_all.deb \
-        && rm -f cuda-keyring_1.1-1_all.deb \
-        && apt update --yes \
-        && apt install -y libcudnn9-cuda-12 libcudnn9-dev-cuda-12 \
-        && sed -i '/^torch$/d' /app/requirements.txt \
-        && sed -i '/^torchvision$/d' /app/requirements.txt \
-        && pip install --no-cache-dir numpy==1.26.4 \
-        && pip install --no-cache-dir -r /app/requirements.txt \
-        && apt remove g++ wget --yes \
-        && apt autoremove --yes \
-        && rm -rf /var/cache/apt
+    && apt-get update --yes \
+    && apt-get install --yes --no-install-recommends \
+       g++ wget ffmpeg libsm6 libxext6 gimp libvulkan1
+
+RUN sed -i '/^torch$/d' /app/requirements.txt \
+    && sed -i '/^torchvision$/d' /app/requirements.txt \
+    && sed -i '/^torchaudio$/d' /app/requirements.txt
+
+RUN pip install --no-cache-dir numpy==1.26.4
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+RUN apt-get remove g++ wget --yes \
+    && apt-get autoremove --yes \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 COPY . /app
 
