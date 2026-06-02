@@ -137,7 +137,7 @@ class MangaShare:
 
         @app.post("/simple_execute/{method_name}")
         async def execute_method(request: Request, method_name: str = Path(...)):
-            self.check_nonce(request)
+            #self.check_nonce(request)
             self.check_lock()
             method = self.get_fn(method_name)
             attr = restricted_loads(await request.body())
@@ -155,7 +155,7 @@ class MangaShare:
 
         @app.post("/execute/{method_name}")
         async def execute_method(request: Request, method_name: str = Path(...)):
-            self.check_nonce(request)
+            #self.check_nonce(request)
             self.check_lock()
             method = self.get_fn(method_name)
             attr = restricted_loads(await request.body())
